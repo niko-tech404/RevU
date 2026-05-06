@@ -2,6 +2,7 @@
 session_start();
 include 'connect_db.php';
 
+// Gestione Ricerca
 $search = trim($_GET['q'] ?? '');
 $escapedSearch = $conn->real_escape_string($search);
 
@@ -10,122 +11,84 @@ if ($search !== '') {
     $sql .= " WHERE titolo LIKE '%$escapedSearch%'";
 }
 $sql .= " ORDER BY titolo ASC";
-
 $ris = $conn->query($sql);
-$results = [];
-if ($ris) {
-    while ($row = $ris->fetch_assoc()) {
-        $results[] = $row;
-    }
-}
 ?>
+
 <!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catalogo</title>
+    <title>Catalogo Giochi - Store 2026</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="page-shell">
+<body>
+
     <header class="site-header">
         <div class="header-inner">
-            <div class="nav-left">
-                <a href="index.php" class="brand-mark">
-                    <span class="brand-orb"></span>
-                    <span class="brand-copy">
-                        <strong>STEAM_2026</strong>
-                        <span>Dark glass storefront</span>
-                    </span>
-                </a>
-            </div>
-
-            <div class="nav-right">
-                <a href="index.php" class="btn">Home</a>
-                <a href="catalogue.php" class="btn active">Catalogo</a>
-                <?php if (isset($_SESSION['id_utente'])): ?>
-                    <a href="library.php" class="btn">Libreria</a>
-                    <a href="profile.php" class="btn">Profilo</a>
+            <a href="index.php" class="brand">GAMER_VAULT</a>
+            <nav class="nav-group">
+                <a href="index.php" class="nav-link">Home</a>
+                <a href="catalogue.php" class="nav-link active">Catalogo</a>
+                <?php if(isset($_SESSION['id_utente'])): ?>
+                    <a href="library.php" class="nav-link">Libreria</a>
+                    <a href="logout.php" class="nav-link" style="color: #ff453a;">Esci</a>
                 <?php else: ?>
-                    <a href="login.php" class="btn">Log In</a>
-                    <a href="signup.php" class="btn btn-primary">Sign Up</a>
+                    <a href="login.php" class="nav-link">Accedi</a>
                 <?php endif; ?>
-            </div>
+            </nav>
         </div>
     </header>
 
-    <main class="shell-container stack">
-        <section class="section-shell">
-            <div class="section-heading">
-                <div>
-                    <span class="eyebrow">Game list</span>
-                    <h2>Catalogo giochi</h2>
-                    <p>Qui c’e solo quello che serve: ricerca, risultati e stato vuoto chiaro se un titolo non e caricato nel database.</p>
-                </div>
-            </div>
+    <main class="container">
+        <!-- Hero Section con Ricerca Raggruppata -->
+        <section style="padding: 40px 0;">
+            <h1 style="font-size: 42px; letter-spacing: -2px; margin-bottom: 10px;">Catalogo</h1>
+            <p style="color: rgba(255,255,255,0.5); margin-bottom: 30px;">Esplora i migliori titoli della generazione.</p>
 
-            <div class="toolbar-shell">
-                <form action="catalogue.php" method="GET" class="search-shell">
-                    <input
-                        class="search-input"
-                        type="search"
-                        name="q"
-                        value="<?php echo htmlspecialchars($search); ?>"
-                        placeholder="Cerca un titolo..."
-                    >
-                    <button class="btn btn-primary" type="submit">Cerca</button>
+            <div class="search-group">
+                <form action="catalogue.php" method="GET" class="search-container">
+                    <input type="text" name="q" class="search-input" 
+                           placeholder="Cerca un titolo..." 
+                           value="<?php echo htmlspecialchars($search); ?>">
+                    <button type="submit" class="search-btn">Cerca</button>
                 </form>
-
-                <div class="toolbar-row">
-                    <div class="search-meta">
-                        <span class="eyebrow">Search</span>
-                        <span class="result-info">
-                            <?php if ($search !== ''): ?>
-                                Risultati per "<?php echo htmlspecialchars($search); ?>"
-                            <?php else: ?>
-                                Tutti i titoli ordinati alfabeticamente
-                            <?php endif; ?>
-                        </span>
-                    </div>
-                    <span class="result-info"><?php echo count($results); ?> risultati</span>
-                </div>
             </div>
+        </section>
 
-            <?php if (count($results) > 0): ?>
-                <div class="card-grid mt-8">
-                    <?php foreach ($results as $g): ?>
-                        <article class="card">
-                            <div class="card-topline">
-                                <span class="eyebrow">Ready</span>
-                                <span class="label"><?php echo number_format((float) $g['prezzo'], 2, ',', '.'); ?> EUR</span>
-                            </div>
-                            <div class="card-media">
-                                <div class="media-label">
-                                    <strong><?php echo htmlspecialchars($g['titolo']); ?></strong>
-                                    <span>Search result</span>
-                                </div>
-                            </div>
-                            <div class="card-body">
+        <!-- Griglia Giochi -->
+        <div class="grid">
+            <?php if ($ris && $ris->num_rows > 0): ?>
+                <?php while($g = $ris->fetch_assoc()): ?>
+                    <article class="card">
+                        <!-- Immagine locale da assets/game/ -->
+                        <img src="<?php echo htmlspecialchars($g['immagine']); ?>" 
+                             alt="Cover <?php echo htmlspecialchars($g['titolo']); ?>" 
+                             class="card-image">
+                        
+                        <div class="card-content">
+                            <div>
                                 <h3><?php echo htmlspecialchars($g['titolo']); ?></h3>
-                                <p>Risultato del catalogo con card piu leggibile, spacing piu ampio e accesso diretto alla scheda dettaglio.</p>
-                                <div class="card-topline">
-                                    <span class="price-tag">
-                                        <strong><?php echo number_format((float) $g['prezzo'], 2, ',', '.'); ?> EUR</strong>
-                                        <span>digital access</span>
-                                    </span>
-                                    <a href="game.php?id=<?php echo $g['id']; ?>" class="card-link">Apri scheda</a>
-                                </div>
+                                <p class="desc-text">Esperienza digitale completa.</p>
                             </div>
-                        </article>
-                    <?php endforeach; ?>
-                </div>
+                            
+                            <div class="card-footer">
+                                <span class="price">
+                                    <?php echo ($g['prezzo'] == 0) ? 'Gratis' : number_format($g['prezzo'], 2) . ' €'; ?>
+                                </span>
+                                <a href="game.php?id=<?php echo $g['id']; ?>" class="btn-small">Dettagli</a>
+                            </div>
+                        </div>
+                    </article>
+                <?php endwhile; ?>
             <?php else: ?>
-                <div class="empty-state catalog-empty mt-8">
-                    <h3>Gioco non caricato</h3>
-                    <p>Il titolo cercato non e presente nel catalogo attuale. Se serve, va inserito nel database prima che compaia nella game list.</p>
+                <div style="grid-column: 1/-1; text-align: center; padding: 50px;">
+                    <p style="color: rgba(255,255,255,0.5);">Nessun gioco trovato per questa ricerca.</p>
+                    <a href="catalogue.php" style="color: #0a84ff; text-decoration: none; margin-top: 10px; display: block;">Mostra tutti</a>
                 </div>
             <?php endif; ?>
-        </section>
+        </div>
     </main>
+
 </body>
 </html>

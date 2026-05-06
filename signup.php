@@ -6,10 +6,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
     $pass = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
-    $sql = "INSERT INTO utenti (nickname, email, password) VALUES ('$nick', '$email', '$pass')";
+    $stmt = $conn->prepare("INSERT INTO utenti (nickname, email, password) VALUES (?, ?, ?)");
+    $stmt->bind_param("sss", $nick, $email, $pass);
 
-    if ($conn->query($sql)) {
+    if ($stmt->execute()) {
         header("Location: login.php");
+        exit();
     }
 }
 ?>
@@ -18,56 +20,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up</title>
+    <title>Registrati</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="page-shell auth-page">
-    <main class="auth-card">
-        <section class="auth-intro">
-            <span class="eyebrow">Account creation</span>
-            <h1>Crea un account dentro una UI scura coerente con tutto lo store.</h1>
-            <p>Signup, catalogo, libreria e pagina gioco ora usano la stessa lingua visiva: glassmorphism scuro, pill flottanti, spacing piu largo e migliore fluidita tra desktop e mobile.</p>
+<body class="centered-layout">
+    <main class="auth-box">
+        <h1>Crea Account</h1>
+        <p style="color: var(--text-dim); margin-bottom: 2rem;">Entra a far parte della nostra piattaforma.</p>
 
-            <div class="auth-preview">
-                <div class="stat-chip">
-                    <strong>Fast onboarding</strong>
-                    <span>flusso diretto verso il login</span>
-                </div>
-                <div class="stat-chip">
-                    <strong>Readable forms</strong>
-                    <span>contrasto e focus puliti</span>
-                </div>
-                <div class="stat-chip">
-                    <strong>Glass layers</strong>
-                    <span>blur, bordi e ombre consistenti</span>
-                </div>
-                <div class="stat-chip">
-                    <strong>Responsive shell</strong>
-                    <span>stack fluido su mobile</span>
-                </div>
+        <form action="signup.php" method="POST">
+            <div class="form-group">
+                <label>Nickname</label>
+                <input type="text" name="nickname" required>
             </div>
-        </section>
-
-        <section class="auth-form">
-            <form action="signup.php" method="POST">
-                <div class="form-field">
-                    <label for="nickname">Nickname</label>
-                    <input id="nickname" type="text" name="nickname" placeholder="scegli un nickname" required>
-                </div>
-                <div class="form-field">
-                    <label for="email">Email</label>
-                    <input id="email" type="email" name="email" placeholder="nome@dominio.it" required>
-                </div>
-                <div class="form-field">
-                    <label for="password">Password</label>
-                    <input id="password" type="password" name="password" placeholder="crea una password" required>
-                </div>
-                <div class="auth-actions">
-                    <button class="btn btn-primary" type="submit">Crea account</button>
-                    <a href="login.php" class="btn">Ho gia un account</a>
-                </div>
-            </form>
-        </section>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" name="password" required>
+            </div>
+            <button type="submit" class="btn btn-primary full-width">Registrati</button>
+            <p class="alt-action">Hai già un account? <a href="login.php">Accedi</a></p>
+        </form>
     </main>
 </body>
 </html>
