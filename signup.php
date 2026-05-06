@@ -33,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="header-inner">
             <a href="index.php" class="brand">VAULT</a>
             <nav class="nav-group">
-                <a href="catalogue.php" class="nav-link">Store</a>
+                <a href="catalogue.php" class="nav-link">Catalogo</a>
             </nav>
         </div>
     </header>
@@ -60,7 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <label>PASSWORD</label>
                     <input type="password" name="password" placeholder="Minimo 8 caratteri" required>
                 </div>
-                <button type="submit" class="btn-buy" style="width: 100%; border:none; cursor:pointer;">Registrati</button>
+                <button type="submit" class="btn-buy btn-full btn-no-border">Registrati</button>
                 <div class="auth-footer">
                     <span>Hai già un account?</span> <a href="login.php">Accedi</a>
                 </div>

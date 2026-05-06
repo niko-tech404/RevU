@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <div class="header-inner">
             <a href="index.php" class="brand">VAULT</a>
             <nav class="nav-group">
-                <a href="catalogue.php" class="nav-link">Store</a>
+                <a href="catalogue.php" class="nav-link">Catalogo</a>
             </nav>
         </div>
     </header>
@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <label>PASSWORD</label>
                     <input type="password" name="password" placeholder="••••••••" required>
                 </div>
-                <button type="submit" class="btn-buy" style="width: 100%; border:none; cursor:pointer;">Accedi</button>
+                <button type="submit" class="btn-buy btn-full btn-no-border">Accedi</button>
                 <div class="auth-footer">
                     <span>Nuovo utente?</span> <a href="signup.php">Crea un account</a>
                 </div>

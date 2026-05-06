@@ -49,9 +49,9 @@ $query = "SELECT giochi.*, AVG(recensioni.voto) AS media_voti
 $risultato = $conn->query($query);
 $gioco = $risultato->fetch_assoc();
 
-if (!$gioco) { 
-    header("Location: catalogue.php"); 
-    exit(); 
+if (!$gioco) {
+    header("Location: catalogue.php");
+    exit();
 }
 
 /* Prendo tutte le recensioni */
@@ -70,55 +70,34 @@ $commenti = $conn->query($sql_commenti);
     <meta charset="UTF-8">
     <title><?= htmlspecialchars($gioco['titolo']) ?> - Vault</title>
     <link rel="stylesheet" href="style.css">
-
-    <style>
-        .stelle-input-finale {
-            display: flex;
-            justify-content: flex-start;
-            gap: 6px;
-            margin-top: 8px;
-        }
-
-        .stella-finale {
-            display: inline-block;
-            font-size: 36px;
-            color: rgba(255,255,255,0.25);
-            cursor: pointer;
-            line-height: 1;
-            user-select: none;
-            transition: 0.2s;
-        }
-
-        .stella-finale:hover {
-            transform: scale(1.08);
-        }
-    </style>
 </head>
 <body class="auth-page">
     <header class="site-header">
         <div class="header-inner">
             <a href="index.php" class="brand">VAULT</a>
             <nav class="nav-group">
-                <a href="catalogue.php" class="nav-link">Store</a>
+                <a href="catalogue.php" class="nav-link">Catalogo</a>
+                <?php if (isset($_SESSION['id_utente'])): ?>
+                    <a href="library.php" class="nav-link">Libreria</a>
+                <?php endif; ?>
                 <a href="cart.php" class="nav-link">Carrello (<?= count($_SESSION['carrello'] ?? []) ?>)</a>
             </nav>
         </div>
     </header>
 
-    <main class="container" style="margin-top: 120px;">
-
-        <!-- BLOCCO PRINCIPALE GIOCO -->
-        <div style="display: flex; gap: 40px; align-items: flex-start;">
-            <div class="game-cover">
-                <img src="<?= $gioco['immagine'] ?>" style="width: 300px; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.5);">
+    <main class="container game-page">
+        <section class="game-layout">
+            <div class="game-cover-card">
+                <img src="<?= htmlspecialchars($gioco['immagine']) ?>" alt="<?= htmlspecialchars($gioco['titolo']) ?>" class="game-cover-image">
             </div>
-            
-            <div class="game-info" style="flex: 1;">
+
+            <div class="game-info">
+                <p class="eyebrow">Scheda gioco</p>
                 <h1><?= htmlspecialchars($gioco['titolo']) ?></h1>
 
-                <div style="margin-top: 10px; color: #f5c542; font-size: 18px;">
+                <div class="rating-line">
                     ★
-                    <span style="color: white;">
+                    <span>
                         <?php if ($gioco['media_voti']): ?>
                             <?= number_format($gioco['media_voti'], 1) ?> / 5
                         <?php else: ?>
@@ -127,29 +106,54 @@ $commenti = $conn->query($sql_commenti);
                     </span>
                 </div>
 
-                <p style="color: var(--text-dim); margin-top: 20px;">
+                <p class="game-description">
                     <?= nl2br(htmlspecialchars($gioco['descrizione'])) ?>
                 </p>
-                
-                <div class="purchase-card" style="background: rgba(255,255,255,0.05); padding: 30px; border-radius: 20px; margin-top: 30px;">
-                    <span style="font-size: 2rem; font-weight: 800;">
-                        <?= number_format($gioco['prezzo'], 2) ?> €
-                    </span>
 
-                    <div style="margin-top: 20px; display: flex; gap: 15px;">
-                        <a href="add_to_cart.php?id=<?= $gioco['id'] ?>" class="btn-buy" style="background: #323232; border: 1px solid #444;">Aggiungi al Carrello</a>
-                        <a href="checkout.php?direct_id=<?= $gioco['id'] ?>" class="btn-buy">Acquista Ora</a>
+                <div class="game-feature-list">
+                    <span class="feature-pill">Download digitale</span>
+                    <span class="feature-pill">Accesso immediato</span>
+                    <span class="feature-pill">Recensioni utenti</span>
+                </div>
+
+                <div class="purchase-card">
+                    <div class="purchase-card-head">
+                        <div>
+                            <p class="purchase-label">Prezzo attuale</p>
+                            <span class="purchase-price"><?= number_format($gioco['prezzo'], 2) ?> €</span>
+                        </div>
+                        <?php if ($ha_comprato): ?>
+                            <span class="library-badge">Già nella tua libreria</span>
+                        <?php endif; ?>
                     </div>
+
+                    <p class="purchase-copy">Acquista subito oppure salva il titolo nel carrello per completare l'ordine insieme agli altri giochi.</p>
+
+                    <?php if ($ha_comprato): ?>
+                        <div class="purchase-actions">
+                            <a href="library.php" class="btn-buy">Vai alla libreria</a>
+                            <a href="#recensioni" class="btn btn-secondary">Scrivi una recensione</a>
+                        </div>
+                    <?php else: ?>
+                        <div class="purchase-actions">
+                            <a href="add_to_cart.php?id=<?= $gioco['id'] ?>" class="btn btn-secondary">Aggiungi al carrello</a>
+                            <a href="checkout.php?direct_id=<?= $gioco['id'] ?>" class="btn-buy">Acquista ora</a>
+                        </div>
+                    <?php endif; ?>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <!-- AREA RECENSIONI ORIZZONTALE TIPO COMMENTI -->
-        <section class="recensioni-box" style="max-width: 100%; margin: 45px 0 0 0;">
-            <h2>Recensioni</h2>
+        <section class="recensioni-box" id="recensioni">
+            <div class="section-head section-head-tight">
+                <div>
+                    <p class="eyebrow">Community</p>
+                    <h2>Recensioni</h2>
+                </div>
+                <p class="section-note">Un'area più ordinata, leggibile e simile a una vera scheda prodotto.</p>
+            </div>
 
             <?php if (isset($_SESSION['id_utente'])): ?>
-
                 <?php if ($ha_comprato): ?>
                     <form method="POST" class="recensione-form">
                         <label>Lascia la tua valutazione</label>
@@ -166,7 +170,7 @@ $commenti = $conn->query($sql_commenti);
 
                         <textarea name="commento" placeholder="Scrivi un commento se vuoi..."></textarea>
 
-                        <button type="submit" class="btn-buy" style="border: none; margin-top: 15px; cursor: pointer;">
+                        <button type="submit" class="btn-buy btn-no-border">
                             Invia recensione
                         </button>
                     </form>
@@ -180,12 +184,11 @@ $commenti = $conn->query($sql_commenti);
 
                         <textarea disabled placeholder="Devi acquistare il gioco per commentare."></textarea>
 
-                        <p style="font-size: 13px; color: rgba(255,255,255,0.5); margin-top: 10px;">
+                        <p class="info-note">
                             Puoi leggere le recensioni, ma per votare devi acquistare il gioco.
                         </p>
                     </div>
                 <?php endif; ?>
-
             <?php else: ?>
                 <div class="recensione-form recensione-bloccata">
                     <label>Lascia la tua valutazione</label>
@@ -196,7 +199,7 @@ $commenti = $conn->query($sql_commenti);
 
                     <textarea disabled placeholder="Accedi e acquista il gioco per commentare."></textarea>
 
-                    <p style="font-size: 13px; color: rgba(255,255,255,0.5); margin-top: 10px;">
+                    <p class="info-note">
                         Devi accedere e acquistare il gioco per lasciare una recensione.
                     </p>
                 </div>
@@ -208,9 +211,9 @@ $commenti = $conn->query($sql_commenti);
                 <?php if ($commenti->num_rows > 0): ?>
                     <?php while($r = $commenti->fetch_assoc()): ?>
                         <div class="commento-card">
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div class="commento-head">
                                 <strong><?= htmlspecialchars($r['nickname']) ?></strong>
-                                <span style="color: #f5c542;">
+                                <span class="rating-line rating-line-small">
                                     <?php for ($i = 1; $i <= $r['voto']; $i++): ?>
                                         ★
                                     <?php endfor; ?>
@@ -220,14 +223,12 @@ $commenti = $conn->query($sql_commenti);
                             <?php if (!empty($r['commento'])): ?>
                                 <p><?= nl2br(htmlspecialchars($r['commento'])) ?></p>
                             <?php else: ?>
-                                <p style="opacity: 0.5;">Nessun commento scritto.</p>
+                                <p class="commento-empty">Nessun commento scritto.</p>
                             <?php endif; ?>
                         </div>
                     <?php endwhile; ?>
                 <?php else: ?>
-                    <p style="opacity: 0.5; margin-top: 15px;">
-                        Non ci sono ancora recensioni per questo gioco.
-                    </p>
+                    <p class="empty-copy">Non ci sono ancora recensioni per questo gioco.</p>
                 <?php endif; ?>
             </div>
         </section>
@@ -238,46 +239,32 @@ $commenti = $conn->query($sql_commenti);
             let stelle = document.querySelectorAll("#stelleInputFinale .stella-finale");
             let inputVoto = document.getElementById("voto");
 
+            function aggiornaStelle(votoAttivo, classeAttiva) {
+                stelle.forEach(function(stella) {
+                    let valore = parseInt(stella.getAttribute("data-voto"));
+                    stella.classList.remove("is-active", "is-preview");
+
+                    if (votoAttivo >= 1 && valore <= votoAttivo) {
+                        stella.classList.add(classeAttiva);
+                    }
+                });
+            }
+
             stelle.forEach(function(stella) {
                 stella.addEventListener("click", function() {
                     let voto = parseInt(stella.getAttribute("data-voto"));
                     inputVoto.value = voto;
-
-                    stelle.forEach(function(s) {
-                        let valore = parseInt(s.getAttribute("data-voto"));
-
-                        if (valore <= voto) {
-                            s.style.color = "#f5c542";
-                        } else {
-                            s.style.color = "rgba(255,255,255,0.25)";
-                        }
-                    });
+                    aggiornaStelle(voto, "is-active");
                 });
 
                 stella.addEventListener("mouseover", function() {
                     let voto = parseInt(stella.getAttribute("data-voto"));
-
-                    stelle.forEach(function(s) {
-                        let valore = parseInt(s.getAttribute("data-voto"));
-
-                        if (valore <= voto) {
-                            s.style.color = "#f5c542";
-                        }
-                    });
+                    aggiornaStelle(voto, "is-preview");
                 });
 
                 stella.addEventListener("mouseout", function() {
-                    let votoScelto = parseInt(inputVoto.value);
-
-                    stelle.forEach(function(s) {
-                        let valore = parseInt(s.getAttribute("data-voto"));
-
-                        if (votoScelto >= 1 && valore <= votoScelto) {
-                            s.style.color = "#f5c542";
-                        } else {
-                            s.style.color = "rgba(255,255,255,0.25)";
-                        }
-                    });
+                    let votoScelto = parseInt(inputVoto.value || 0);
+                    aggiornaStelle(votoScelto, "is-active");
                 });
             });
         });

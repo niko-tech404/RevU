@@ -1,329 +1,675 @@
-/* =========================================
-   RESET E IMPOSTAZIONI DI BASE
-   ========================================= */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+:root {
+    --bg-main: #050608;
+    --bg-secondary: #0d1117;
+    --bg-panel: rgba(17, 20, 27, 0.82);
+    --bg-soft: rgba(255, 255, 255, 0.04);
+    --bg-soft-strong: rgba(255, 255, 255, 0.08);
+    --border-soft: rgba(255, 255, 255, 0.1);
+    --border-strong: rgba(255, 255, 255, 0.16);
+    --text-main: #f4f7fb;
+    --text-dim: rgba(244, 247, 251, 0.66);
+    --text-faint: rgba(244, 247, 251, 0.42);
+    --accent: #2f8cff;
+    --accent-strong: #78b7ff;
+    --accent-dark: #123e73;
+    --gold: #f5c542;
+    --danger: #ff5f57;
+    --shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.28);
+    --shadow-strong: 0 28px 60px rgba(0, 0, 0, 0.42);
+    --radius-xl: 28px;
+    --radius-lg: 22px;
+    --radius-md: 18px;
+    --radius-sm: 14px;
+    --transition-fast: 0.22s ease;
+    --transition-base: 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(15px); }
-    to { opacity: 1; transform: translateY(0); }
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
 }
 
 body {
-    background-color: #000000;
-    color: #ffffff;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    line-height: 1.5;
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at top left, rgba(47, 140, 255, 0.18), transparent 34%),
+        radial-gradient(circle at top right, rgba(245, 197, 66, 0.08), transparent 24%),
+        linear-gradient(180deg, #0a0d12 0%, #050608 42%, #06080c 100%);
+    color: var(--text-main);
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.55;
     -webkit-font-smoothing: antialiased;
-    background-image: radial-gradient(circle at top right, #1a1a2e, #000000);
-    background-attachment: fixed;
-    animation: none; 
+}
+
+img {
+    display: block;
+    max-width: 100%;
+}
+
+a {
+    color: inherit;
+}
+
+button,
+input,
+select,
+textarea {
+    font: inherit;
+}
+
+textarea {
+    resize: vertical;
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(18px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes floatSoft {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-8px);
+    }
 }
 
 .container {
-    max-width: 1100px;
+    width: min(1200px, calc(100% - 32px));
     margin: 0 auto;
-    padding: 20px;
+    padding: 138px 0 48px;
 }
-
-/* =========================================
-   HEADER & NAVIGATION
-   ========================================= */
 
 .site-header {
     position: fixed;
-    top: 15px;
+    top: 14px;
     left: 50%;
     transform: translateX(-50%);
-    width: 95%;
-    max-width: 1200px;
+    width: min(1220px, calc(100% - 24px));
     z-index: 1000;
-    background: rgba(20, 20, 22, 0.7);
-    backdrop-filter: blur(25px);
-    -webkit-backdrop-filter: blur(25px);
-    border: 0.5px solid rgba(255, 255, 255, 0.08);
-    border-radius: 20px;
-    padding: 8px 30px;
+    background: rgba(10, 12, 16, 0.82);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.32);
 }
 
 .header-inner {
     display: flex;
     justify-content: space-between;
     align-items: center;
-}
-
-main, 
-.catalogo-layout, 
-.auth-wrapper {
-    margin-top: 130px !important;
-    animation: fadeIn 0.8s ease-out;
+    gap: 20px;
+    padding: 12px 26px;
 }
 
 .brand {
-    font-size: 20px;
-    font-weight: 800;
-    color: #ffffff;
     text-decoration: none;
-    letter-spacing: -1px;
+    color: var(--text-main);
+    font-size: 1.1rem;
+    font-weight: 800;
+    letter-spacing: 0.18em;
 }
 
-.nav-group {
+.brand-small {
+    font-size: 0.96rem;
+}
+
+.nav-group,
+.nav-right {
     display: flex;
+    align-items: center;
     gap: 8px;
+    flex-wrap: wrap;
 }
 
 .nav-link {
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(255, 255, 255, 0.62);
     text-decoration: none;
-    font-size: 14px;
-    font-weight: 500;
-    padding: 8px 16px;
-    border-radius: 20px;
-    transition: 0.3s;
-}
-
-.nav-link:hover, .nav-link.active {
-    color: #ffffff;
-    background-color: rgba(255, 255, 255, 0.1);
-}
-
-/* =========================================
-   RICERCA
-   ========================================= */
-
-.search-group {
-    margin: 30px 0;
-}
-
-.search-container {
-    display: flex;
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
-    border: 0.5px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
-    padding: 6px;
-    transition: 0.3s;
-}
-
-.search-container:focus-within {
-    border-color: #0a84ff;
-    transform: scale(1.01);
-}
-
-.search-input {
-    flex-grow: 1;
-    background: transparent;
-    border: none;
-    padding: 12px 18px;
-    color: #ffffff;
-    font-size: 16px;
-    outline: none;
-}
-
-.search-btn {
-    background-color: #0a84ff;
-    color: #ffffff;
-    border: none;
-    padding: 0 25px;
-    border-radius: 12px;
+    font-size: 0.92rem;
     font-weight: 600;
-    cursor: pointer;
-    transition: 0.2s;
+    padding: 9px 16px;
+    border-radius: 999px;
+    background: transparent;
+    transition: color var(--transition-fast), background-color var(--transition-fast), border-color var(--transition-fast);
 }
 
-.search-btn:active {
-    transform: scale(0.95);
+.nav-link:hover,
+.nav-link.active {
+    color: var(--text-main);
+    background: rgba(255, 255, 255, 0.09);
 }
 
-/* =========================================
-   GRIGLIA E CARDS GIOCHI
-   ========================================= */
+.hero-home,
+.content-section,
+.catalogue-results,
+.sidebar-filtri,
+.cart-list,
+.summary-card,
+.checkout-panel,
+.game-layout,
+.recensioni-box,
+.profile-info,
+.auth-card {
+    animation: fadeUp 0.75s var(--transition-base);
+}
+
+.content-section + .content-section,
+.game-layout + .recensioni-box,
+.section-head + .grid {
+    margin-top: 28px;
+}
+
+.section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 24px;
+    margin-bottom: 20px;
+}
+
+.section-head-tight {
+    margin-bottom: 24px;
+}
+
+.section-head h1,
+.section-head h2,
+.hero-copy h1,
+.game-info h1,
+.auth-card h2,
+.profile-info h1 {
+    letter-spacing: -0.04em;
+    line-height: 1.05;
+}
+
+.section-head h1,
+.section-head h2,
+.game-info h1,
+.hero-copy h1 {
+    font-size: clamp(2rem, 3.5vw, 3.6rem);
+}
+
+.section-head h2 {
+    font-size: clamp(1.7rem, 3vw, 2.6rem);
+}
+
+.section-note,
+.auth-subtitle,
+.game-description,
+.purchase-copy,
+.summary-note,
+.empty-state p,
+.filter-card-head p {
+    color: var(--text-dim);
+}
+
+.section-note {
+    max-width: 420px;
+    text-align: right;
+    font-size: 0.98rem;
+}
+
+.eyebrow,
+.hero-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--accent-strong);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.hero-label,
+.eyebrow {
+    margin-bottom: 14px;
+}
+
+.hero-home {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+    gap: 28px;
+    align-items: stretch;
+    margin-bottom: 44px;
+}
+
+.hero-copy,
+.hero-spotlight,
+.checkout-panel,
+.summary-card,
+.sidebar-filtri,
+.profile-info,
+.auth-card,
+.recensioni-box,
+.purchase-card,
+.game-cover-card {
+    background: linear-gradient(180deg, rgba(18, 21, 29, 0.92), rgba(10, 12, 16, 0.9));
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-soft);
+}
+
+.hero-copy {
+    padding: 42px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 420px;
+}
+
+.hero-copy p {
+    max-width: 560px;
+    color: var(--text-dim);
+    font-size: 1.08rem;
+    margin-top: 18px;
+}
+
+.hero-actions,
+.purchase-actions,
+.card-actions,
+.profile-actions {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+.hero-actions {
+    margin-top: 28px;
+}
+
+.hero-spotlight {
+    position: relative;
+    overflow: hidden;
+    min-height: 420px;
+}
+
+.hero-spotlight-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.42;
+}
+
+.hero-spotlight::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(8, 10, 14, 0.1), rgba(8, 10, 14, 0.9));
+}
+
+.hero-spotlight-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: 100%;
+    padding: 34px;
+}
+
+.hero-spotlight-content h2 {
+    font-size: clamp(1.8rem, 2.8vw, 2.6rem);
+    letter-spacing: -0.04em;
+}
+
+.hero-spotlight-content p:not(.eyebrow) {
+    color: rgba(255, 255, 255, 0.82);
+    margin-top: 12px;
+}
+
+.hero-spotlight-meta,
+.card-meta,
+.card-footer,
+.purchase-card-head,
+.summary-card-head,
+.summary-row,
+.commento-head,
+.data-row,
+.checkout-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+}
+
+.hero-spotlight-meta {
+    margin-top: 22px;
+}
+
+.hero-spotlight-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
 
 .grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 22px;
 }
 
 .card {
-    background: rgba(255, 255, 255, 0.03);
-    border-radius: 22px;
+    position: relative;
     overflow: hidden;
-    border: 0.5px solid rgba(255, 255, 255, 0.1);
-    transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: linear-gradient(180deg, rgba(14, 17, 24, 0.92), rgba(9, 11, 15, 0.92));
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-soft);
+    transition: transform var(--transition-base), border-color var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast);
 }
 
-.card:hover {
-    transform: translateY(-8px);
-    background: rgba(44, 44, 46, 0.6);
-    border-color: rgba(255, 255, 255, 0.2);
+.card:hover,
+.summary-card:hover,
+.purchase-card:hover,
+.auth-card:hover,
+.profile-info:hover,
+.game-cover-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--border-strong);
+    box-shadow: var(--shadow-strong);
 }
 
 .card-image {
     width: 100%;
-    height: 160px;
+    height: 220px;
     object-fit: cover;
 }
 
 .card-content {
-    padding: 15px;
+    padding: 20px;
 }
 
 .card-content h3 {
-    font-size: 16px;
-    font-weight: 600;
+    font-size: 1.16rem;
     margin-bottom: 10px;
+    letter-spacing: -0.03em;
 }
 
 .desc-text {
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 14px;
-    line-height: 1.4;
-    margin-bottom: 20px;
+    color: var(--text-dim);
+    font-size: 0.94rem;
+    min-height: 4.6em;
+    margin-bottom: 18px;
 }
 
-.card-footer {
-    display: flex;
-    justify-content: space-between;
+.card-meta {
+    margin-bottom: 18px;
     align-items: center;
 }
 
+.card-footer {
+    margin-top: 8px;
+}
+
+.game-card-discount .card-content {
+    padding-top: 18px;
+}
+
+.discount-badge,
+.library-badge,
+.rating-pill,
+.feature-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 700;
+}
+
+.discount-badge {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    z-index: 1;
+    padding: 8px 12px;
+    background: rgba(245, 197, 66, 0.94);
+    color: #1f1600;
+    box-shadow: 0 10px 24px rgba(245, 197, 66, 0.28);
+}
+
+.rating-pill,
+.feature-pill,
+.library-badge {
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text-main);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.rating-pill {
+    color: #ffd978;
+}
+
+.library-badge {
+    color: var(--accent-strong);
+}
+
 .price {
-    font-size: 18px;
-    font-weight: 700;
-    color: #ffffff;
+    font-size: 1.12rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
 }
 
+.btn,
+.btn-buy,
 .btn-small {
-    background-color: #ffffff;
-    color: #000000;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 46px;
+    padding: 0 20px;
+    border-radius: 999px;
     text-decoration: none;
-    padding: 10px 20px;
-    border-radius: 14px;
-    font-size: 13px;
+    font-size: 0.95rem;
     font-weight: 700;
-    transition: 0.2s;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
 }
 
+.btn:hover,
+.btn-buy:hover,
 .btn-small:hover {
-    background-color: #0a84ff;
-    color: #ffffff;
+    transform: translateY(-2px);
 }
 
-/* =========================================
-   LAYOUT CATALOGO
-   ========================================= */
+.btn-buy {
+    color: #06111f;
+    background: linear-gradient(135deg, #7fb9ff 0%, #2f8cff 54%, #0e67db 100%);
+    box-shadow: 0 14px 28px rgba(47, 140, 255, 0.28);
+}
+
+.btn-buy:hover {
+    box-shadow: 0 18px 30px rgba(47, 140, 255, 0.34);
+}
+
+.btn-buy-compact,
+.btn-small {
+    min-height: 42px;
+    font-size: 0.88rem;
+}
+
+.btn {
+    color: var(--text-main);
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.btn:hover {
+    background: rgba(255, 255, 255, 0.09);
+}
+
+.btn-secondary,
+.btn-small {
+    color: var(--text-main);
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.12);
+}
+
+.btn-secondary:hover,
+.btn-small:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.btn-primary {
+    background: rgba(47, 140, 255, 0.14);
+    border-color: rgba(47, 140, 255, 0.34);
+}
+
+.btn-primary:hover {
+    background: rgba(47, 140, 255, 0.22);
+}
+
+.btn-danger {
+    background: rgba(255, 95, 87, 0.12);
+    border-color: rgba(255, 95, 87, 0.28);
+    color: #ffd0cd;
+}
+
+.btn-danger:hover {
+    background: rgba(255, 95, 87, 0.18);
+}
+
+.btn-full {
+    width: 100%;
+}
+
+.btn-no-border {
+    border: none;
+}
 
 .catalogo-layout {
     display: grid;
-    grid-template-columns: 1fr 280px;
-    gap: 30px;
-    margin-top: 130px;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: 28px;
 }
 
 .sidebar-filtri {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(20px);
-    border-radius: 28px;
-    padding: 25px;
-    border: 0.5px solid rgba(255, 255, 255, 0.1);
-    height: fit-content;
     position: sticky;
-    top: 130px;
+    top: 132px;
+    padding: 24px;
+    height: fit-content;
 }
 
-.sidebar-filtri h2 {
-    font-size: 18px;
-    margin-bottom: 20px;
-    color: #ffffff;
+.filter-form,
+.filter-card {
+    display: grid;
+    gap: 14px;
 }
 
-.search-sidebar {
-    width: 100%;
-    background: rgba(255, 255, 255, 0.08);
-    border: none;
-    border-radius: 14px;
-    padding: 12px;
-    color: white;
-    margin-bottom: 20px;
+.filter-card-head {
+    margin-bottom: 4px;
 }
 
-.filtro-group {
-    margin-bottom: 20px;
+.filter-card-head h2 {
+    font-size: 1.2rem;
+    margin-bottom: 8px;
 }
 
 .filtro-label {
     display: block;
-    font-size: 12px;
-    color: rgba(255, 255, 255, 0.5);
+    color: var(--text-faint);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
-    margin-bottom: 10px;
+}
+
+.search-sidebar,
+.select-custom,
+.form-group input,
+.recensione-form textarea {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.045);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-sm);
+    color: var(--text-main);
+    padding: 14px 16px;
+    outline: none;
+    transition: border-color var(--transition-fast), background-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.search-sidebar:focus,
+.select-custom:focus,
+.form-group input:focus,
+.recensione-form textarea:focus {
+    border-color: rgba(127, 185, 255, 0.58);
+    background: rgba(255, 255, 255, 0.07);
+    box-shadow: 0 0 0 4px rgba(47, 140, 255, 0.12);
+}
+
+.search-sidebar::placeholder,
+.form-group input::placeholder,
+.recensione-form textarea::placeholder {
+    color: rgba(255, 255, 255, 0.32);
 }
 
 .select-custom {
-    width: 100%;
-    background: #1c1c1e;
-    color: white;
-    border: 0.5px solid rgba(255, 255, 255, 0.1);
-    padding: 10px;
-    border-radius: 10px;
+    appearance: none;
 }
-
-@media (max-width: 900px) {
-    .catalogo-layout { 
-        grid-template-columns: 1fr; 
-    }
-
-    .sidebar-filtri { 
-        position: relative; 
-        top: 0; 
-        margin-bottom: 30px; 
-    }
-}
-
-/* =========================================
-   CARRELLO
-   ========================================= */
 
 .cart-item {
-    display: flex;
+    display: grid;
+    grid-template-columns: 120px minmax(0, 1fr) auto;
+    gap: 18px;
     align-items: center;
-    background: rgba(255, 255, 255, 0.03);
-    border: 0.5px solid rgba(255, 255, 255, 0.08);
-    border-radius: 20px;
-    padding: 15px;
-    margin-bottom: 15px;
-    transition: 0.2s;
+    padding: 18px;
+    margin-bottom: 14px;
+    border-radius: var(--radius-lg);
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: transform var(--transition-fast), background-color var(--transition-fast), border-color var(--transition-fast);
 }
 
-.cart-item:hover {
+.cart-item:hover,
+.checkout-item:hover,
+.commento-card:hover {
+    transform: translateY(-3px);
     background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.14);
 }
 
-.cart-item img {
-    width: 100px;
-    height: 60px;
+.cart-item img,
+.checkout-item img {
+    width: 100%;
+    height: 74px;
     object-fit: cover;
-    border-radius: 12px;
-    margin-right: 20px;
+    border-radius: 16px;
 }
 
-.cart-item-info {
-    flex-grow: 1;
+.cart-item-info h3,
+.checkout-item strong {
+    font-size: 1rem;
+    margin-bottom: 6px;
 }
 
-.cart-item-info h3 {
-    font-size: 16px;
-    margin-bottom: 4px;
-}
-
-.cart-item-info p {
-    font-size: 12px;
-    color: rgba(255, 255, 255, 0.4);
+.cart-item-info p,
+.checkout-item p,
+.purchase-label,
+.info-note,
+.commento-empty,
+.empty-copy {
+    color: var(--text-faint);
+    font-size: 0.9rem;
 }
 
 .cart-item-price {
@@ -332,218 +678,470 @@ main,
 
 .cart-item-price span {
     display: block;
-    font-weight: 700;
-    font-size: 16px;
-    margin-bottom: 5px;
+    font-size: 1.08rem;
+    font-weight: 800;
+    margin-bottom: 8px;
+}
+
+.cart-item-links {
+    display: flex;
+    justify-content: flex-end;
+    gap: 14px;
+    flex-wrap: wrap;
 }
 
 .remove-link {
-    color: #ff453a;
-    font-size: 12px;
+    color: var(--accent-strong);
     text-decoration: none;
-    font-weight: 600;
+    font-size: 0.88rem;
+    font-weight: 700;
 }
 
 .remove-link:hover {
     text-decoration: underline;
 }
 
-/* =========================================
-   LOGIN E REGISTRAZIONE
-   ========================================= */
-
-.auth-box {
-    background: rgba(28, 28, 30, 0.4);
-    backdrop-filter: blur(30px);
-    border: 0.5px solid rgba(255, 255, 255, 0.1);
-    padding: 40px;
-    max-width: 400px;
-    margin: 80px auto;
-    border-radius: 32px;
-    text-align: center;
+.remove-link-danger {
+    color: #ff9b95;
 }
 
-.form-group {
-    margin-bottom: 20px;
-    text-align: left;
+.summary-card,
+.checkout-panel,
+.profile-info,
+.auth-card,
+.recensioni-box,
+.purchase-card {
+    padding: 28px;
+}
+
+.summary-card-head {
+    margin-bottom: 18px;
+}
+
+.summary-card-head h3 {
+    font-size: 1.18rem;
+}
+
+.summary-card-head span {
+    color: var(--text-faint);
+    font-size: 0.88rem;
+}
+
+.summary-row {
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    color: var(--text-dim);
+}
+
+.summary-row strong {
+    color: var(--text-main);
+}
+
+.summary-total {
+    font-size: 1.08rem;
+    font-weight: 800;
+}
+
+.summary-note {
+    margin-top: 18px;
+    font-size: 0.92rem;
+}
+
+.checkout-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.82fr);
+    gap: 28px;
+}
+
+.checkout-form {
+    display: grid;
+    gap: 16px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
 }
 
 .form-group label {
     display: block;
-    font-size: 12px;
-    font-weight: 600;
-    color: rgba(255, 255, 255, 0.4);
-    margin-bottom: 8px;
-    margin-left: 5px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
+    color: var(--text-faint);
+    margin-bottom: 10px;
 }
 
-.form-group input {
+.checkout-items {
+    display: grid;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.checkout-item {
+    padding: 12px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.game-layout {
+    display: grid;
+    grid-template-columns: 340px minmax(0, 1fr);
+    gap: 30px;
+    align-items: start;
+}
+
+.game-cover-card {
+    padding: 18px;
+    animation: floatSoft 6s ease-in-out infinite;
+}
+
+.game-cover-image {
     width: 100%;
-    padding: 15px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 0.5px solid rgba(255, 255, 255, 0.1);
-    border-radius: 14px;
-    color: #ffffff;
-    font-size: 16px;
-    outline: none;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    border-radius: 22px;
+    box-shadow: var(--shadow-strong);
 }
 
-.form-group input:focus {
-    border-color: #0a84ff;
-    background: rgba(255, 255, 255, 0.08);
+.game-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.game-description {
+    margin-top: 18px;
+    font-size: 1rem;
+}
+
+.rating-line {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--gold);
+    font-weight: 700;
+    margin-top: 14px;
+}
+
+.rating-line span {
+    color: var(--text-main);
+    font-weight: 600;
+}
+
+.rating-line-small {
+    margin-top: 0;
+    font-size: 0.94rem;
+}
+
+.game-feature-list {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 22px;
+}
+
+.purchase-card {
+    margin-top: 28px;
+}
+
+.purchase-card-head {
+    align-items: flex-start;
+}
+
+.purchase-price {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+}
+
+.purchase-copy {
+    margin: 18px 0 22px;
+}
+
+.recensioni-box {
+    margin-top: 34px;
+}
+
+.recensione-form {
+    padding: 22px;
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    margin-bottom: 26px;
+}
+
+.recensione-form label,
+.lista-recensioni h3 {
+    display: block;
+    margin-bottom: 12px;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.stelle-input-finale {
+    display: flex;
+    justify-content: flex-start;
+    gap: 6px;
+    margin-bottom: 16px;
+}
+
+.stella-finale {
+    display: inline-block;
+    font-size: 2.2rem;
+    color: rgba(255, 255, 255, 0.22);
+    cursor: pointer;
+    line-height: 1;
+    user-select: none;
+    transition: transform var(--transition-fast), color var(--transition-fast);
+}
+
+.stella-finale:hover {
+    transform: scale(1.08);
+}
+
+.stella-finale.is-active,
+.stella-finale.is-preview {
+    color: var(--gold);
+}
+
+.recensione-form textarea {
+    min-height: 120px;
+}
+
+.info-note {
+    margin-top: 12px;
+}
+
+.stelle-bloccate {
+    color: rgba(255, 255, 255, 0.28);
+    font-size: 2rem;
+    letter-spacing: 0.16em;
+    margin-bottom: 14px;
+}
+
+.recensione-bloccata {
+    opacity: 0.88;
+}
+
+.lista-recensioni {
+    display: grid;
+    gap: 14px;
+}
+
+.commento-card {
+    padding: 18px;
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+    transition: transform var(--transition-fast), background-color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.commento-card p {
+    margin-top: 10px;
+    color: var(--text-dim);
+}
+
+.commento-empty,
+.empty-copy {
+    margin-top: 8px;
 }
 
 .auth-wrapper {
     display: flex;
-    justify-content: center;
     align-items: center;
-    min-height: calc(100vh - 150px);
+    justify-content: center;
+    min-height: calc(100vh - 160px);
 }
 
 .auth-card {
-    background: rgba(28, 28, 30, 0.4);
-    backdrop-filter: blur(40px);
-    -webkit-backdrop-filter: blur(40px);
-    padding: 40px;
-    border-radius: 32px;
-    border: 0.5px solid rgba(255, 255, 255, 0.1);
-    width: 100%;
-    max-width: 400px;
+    width: min(100%, 440px);
     text-align: center;
-    animation: fadeIn 0.5s ease;
 }
 
 .auth-subtitle {
-    color: rgba(255, 255, 255, 0.4);
-    font-size: 14px;
-    margin-bottom: 30px;
+    margin: 10px 0 26px;
 }
 
 .error-msg {
-    color: #ff453a;
-    background: rgba(255, 69, 58, 0.1);
-    padding: 10px;
-    border-radius: 10px;
-    font-size: 13px;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
+    padding: 12px 14px;
+    border-radius: 16px;
+    background: rgba(255, 95, 87, 0.12);
+    border: 1px solid rgba(255, 95, 87, 0.18);
+    color: #ffd2cf;
+    font-size: 0.92rem;
 }
 
 .auth-footer {
-    margin-top: 25px;
-    font-size: 13px;
-}
-
-.auth-footer span {
-    color: rgba(255, 255, 255, 0.4);
+    margin-top: 20px;
+    font-size: 0.92rem;
+    color: var(--text-faint);
 }
 
 .auth-footer a {
-    color: #0a84ff;
+    color: var(--accent-strong);
     text-decoration: none;
-    font-weight: 600;
-    margin-left: 5px;
+    font-weight: 700;
 }
 
 .auth-footer a:hover {
     text-decoration: underline;
 }
 
-/* =========================================
-   RECENSIONI E COMMENTI
-   ========================================= */
-
-.recensioni-box {
-    max-width: 700px;
-    margin: 50px auto 0 auto;
-    background: rgba(255, 255, 255, 0.03);
-    border: 0.5px solid rgba(255, 255, 255, 0.1);
-    border-radius: 24px;
-    padding: 30px;
+.profile-info {
+    width: min(100%, 760px);
+    margin: 0 auto;
 }
 
-.recensioni-box h2 {
-    margin-bottom: 20px;
+.data-row {
+    padding: 18px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    color: var(--text-dim);
 }
 
-.recensione-form {
-    background: rgba(255, 255, 255, 0.04);
-    padding: 20px;
-    border-radius: 18px;
-    margin-bottom: 30px;
+.data-row strong {
+    color: var(--text-main);
 }
 
-.recensione-form label {
-    display: block;
-    font-size: 13px;
-    color: rgba(255,255,255,0.6);
-    margin-bottom: 10px;
+.profile-actions {
+    margin-top: 28px;
 }
 
-.recensione-form textarea {
-    width: 100%;
-    min-height: 100px;
-    margin-top: 15px;
-    padding: 15px;
-    border-radius: 14px;
-    border: 0.5px solid rgba(255,255,255,0.1);
-    background: rgba(255,255,255,0.05);
-    color: white;
-    resize: vertical;
-    outline: none;
+.empty-state {
+    display: grid;
+    place-items: center;
+    gap: 14px;
+    text-align: center;
+    min-height: 240px;
+    padding: 34px;
+    background: linear-gradient(180deg, rgba(15, 18, 25, 0.9), rgba(10, 12, 16, 0.9));
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-xl);
 }
 
-.recensione-form textarea:focus {
-    border-color: #0a84ff;
+.empty-state h3 {
+    font-size: 1.5rem;
+    letter-spacing: -0.03em;
 }
 
-.stelle-bloccate {
-    font-size: 30px;
-    color: rgba(255,255,255,0.25);
-    letter-spacing: 3px;
-    cursor: default;
+.empty-state-left {
+    place-items: start;
+    text-align: left;
 }
 
-.recensione-bloccata {
-    opacity: 0.8;
+@media (max-width: 1100px) {
+    .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .hero-home,
+    .checkout-layout,
+    .game-layout,
+    .catalogo-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .sidebar-filtri {
+        position: static;
+        top: auto;
+    }
+
+    .section-note {
+        text-align: left;
+        max-width: none;
+    }
+
+    .section-head {
+        align-items: flex-start;
+        flex-direction: column;
+    }
 }
 
-.commento-card {
-    background: rgba(255,255,255,0.04);
-    border: 0.5px solid rgba(255,255,255,0.08);
-    border-radius: 18px;
-    padding: 18px;
-    margin-top: 15px;
-}
+@media (max-width: 760px) {
+    .container {
+        width: min(100% - 24px, 1200px);
+        padding-top: 154px;
+    }
 
-.commento-card p {
-    color: rgba(255,255,255,0.7);
-    font-size: 14px;
-    margin-top: 10px;
-}
-
-/* =========================================
-   RESPONSIVE DESIGN
-   ========================================= */
-
-@media (max-width: 600px) {
     .header-inner {
         flex-direction: column;
-        gap: 15px;
-    }
-    
-    .nav-group {
-        width: 100%;
-        justify-content: center;
-        overflow-x: auto;
-        padding-bottom: 5px;
+        align-items: flex-start;
+        padding: 14px 18px;
     }
 
-    .hero h1 {
-        font-size: 32px;
+    .nav-group,
+    .nav-right {
+        width: 100%;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        padding-bottom: 2px;
     }
-    
+
+    .hero-copy,
+    .hero-spotlight-content,
+    .summary-card,
+    .checkout-panel,
+    .profile-info,
+    .auth-card,
+    .recensioni-box,
+    .purchase-card {
+        padding: 22px;
+    }
+
     .grid {
         grid-template-columns: 1fr;
+    }
+
+    .form-row,
+    .cart-item {
+        grid-template-columns: 1fr;
+    }
+
+    .cart-item img {
+        height: 180px;
+    }
+
+    .cart-item-price {
+        text-align: left;
+    }
+
+    .cart-item-links {
+        justify-content: flex-start;
+    }
+
+    .hero-copy h1,
+    .game-info h1,
+    .section-head h1,
+    .section-head h2 {
+        font-size: clamp(1.9rem, 8vw, 2.8rem);
+    }
+
+    .hero-actions,
+    .purchase-actions,
+    .card-actions,
+    .profile-actions,
+    .hero-spotlight-actions {
+        flex-direction: column;
+    }
+
+    .btn,
+    .btn-buy,
+    .btn-small {
+        width: 100%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
     }
 }

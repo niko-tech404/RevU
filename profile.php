@@ -16,15 +16,16 @@ $u = $stmt->get_result()->fetch_assoc();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Il tuo Profilo</title>
+    <title>Vault - Profilo</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header class="site-header">
         <div class="header-inner">
-            <a href="index.php" class="brand">STORE</a>
-            <nav class="nav-right">
+            <a href="index.php" class="brand">VAULT</a>
+            <nav class="nav-group">
                 <a href="index.php" class="nav-link">Home</a>
+                <a href="catalogue.php" class="nav-link">Catalogo</a>
                 <a href="library.php" class="nav-link">Libreria</a>
                 <a href="profile.php" class="nav-link active">Profilo</a>
             </nav>
@@ -32,8 +33,14 @@ $u = $stmt->get_result()->fetch_assoc();
     </header>
 
     <main class="container">
-        <section class="card profile-info" style="max-width: 600px; margin: 0 auto; padding: 2rem;">
-            <h1 style="margin-bottom: 2rem;">Profilo Utente</h1>
+        <section class="card profile-info">
+            <div class="section-head section-head-tight">
+                <div>
+                    <p class="eyebrow">Area personale</p>
+                    <h1>Profilo utente</h1>
+                </div>
+                <p class="section-note">Dati essenziali, azioni chiare e una gerarchia più ordinata.</p>
+            </div>
             <div class="data-row">
                 <strong>Nickname:</strong>
                 <span><?php echo htmlspecialchars($u['nickname']); ?></span>
@@ -42,7 +49,7 @@ $u = $stmt->get_result()->fetch_assoc();
                 <strong>Email:</strong>
                 <span><?php echo htmlspecialchars($u['email']); ?></span>
             </div>
-            <div class="profile-actions" style="margin-top: 3rem; display: flex; gap: 1rem;">
+            <div class="profile-actions">
                 <a href="logout.php" class="btn">Logout</a>
                 <a href="delete_account.php" class="btn btn-danger">Elimina Account</a>
             </div>
