@@ -1,190 +1,288 @@
-/* Reset di base */
+/* =========================================
+   RESET E IMPOSTAZIONI DI BASE
+   ========================================= */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
-/* Corpo della pagina */
-body {
-    background-color: #0b0b0b;
-    color: #ffffff;
-    font-family: sans-serif;
-    line-height: 1.5;
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-/* Contenitore principale */
+body {
+    background-color: #000000; /* Nero OLED */
+    color: #ffffff;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    /* Gradiente di profondità per far risaltare il vetro */
+    background-image: radial-gradient(circle at top right, #1a1a2e, #000000);
+    background-attachment: fixed;
+    animation: fadeIn 0.8s ease-out;
+}
+
 .container {
-    max-width: 1000px;
+    max-width: 1100px;
     margin: 0 auto;
     padding: 20px;
 }
 
-/* Barra di navigazione */
+/* =========================================
+   HEADER & NAVIGATION (EFFETTO VETRO)
+   ========================================= */
 .site-header {
-    background-color: #1a1a1a;
-    border-bottom: 1px solid #333333;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 0.5px solid rgba(255, 255, 255, 0.1);
     padding: 15px 0;
 }
 
 .header-inner {
-    max-width: 1000px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1100px;
     margin: 0 auto;
     padding: 0 20px;
 }
 
 .brand {
     font-size: 20px;
-    font-weight: bold;
+    font-weight: 800;
     color: #ffffff;
     text-decoration: none;
-    text-transform: uppercase;
+    letter-spacing: -1px;
 }
 
-.nav-right {
-    float: right;
+.nav-group {
+    display: flex;
+    gap: 8px;
 }
 
 .nav-link {
-    color: #cccccc;
+    color: rgba(255, 255, 255, 0.6);
     text-decoration: none;
-    margin-left: 20px;
     font-size: 14px;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 20px;
+    transition: 0.3s;
 }
 
-.nav-link:hover {
+.nav-link:hover, .nav-link.active {
     color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
-.nav-link.active {
-    color: #3b82f6;
-    font-weight: bold;
+/* =========================================
+   RICERCA RAGGRUPPATA
+   ========================================= */
+.search-group {
+    margin: 30px 0;
 }
 
-/* Sezione Hero (Titolo principale) */
-.hero {
-    padding: 60px 0;
-    text-align: center;
+.search-container {
+    display: flex;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 0.5px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 6px;
+    transition: 0.3s;
 }
 
-.hero h1 {
-    font-size: 32px;
-    margin-bottom: 10px;
+.search-container:focus-within {
+    border-color: #0a84ff;
+    transform: scale(1.01);
 }
 
-.hero p {
-    color: #999999;
+.search-input {
+    flex-grow: 1;
+    background: transparent;
+    border: none;
+    padding: 12px 18px;
+    color: #ffffff;
+    font-size: 16px;
+    outline: none;
 }
 
-/* Griglia dei prodotti */
+.search-btn {
+    background-color: #0a84ff;
+    color: #ffffff;
+    border: none;
+    padding: 0 25px;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.search-btn:active {
+    transform: scale(0.95);
+}
+
+/* =========================================
+   GRIGLIA E CARDS GIOCHI
+   ========================================= */
 .grid {
-    overflow: hidden; /* per contenere i float */
-    margin-top: 30px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 20px;
 }
 
-/* Scheda del gioco */
 .card {
-    background-color: #1a1a1a;
-    border: 1px solid #333333;
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 4px;
-    width: 100%;
+    background: rgba(28, 28, 30, 0.5);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 0.5px solid rgba(255, 255, 255, 0.1);
+    border-radius: 28px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 400px; /* Evita lo schiacciamento dello screenshot */
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.card h3 {
-    margin-bottom: 15px;
+.card:hover {
+    transform: translateY(-8px);
+    background: rgba(44, 44, 46, 0.6);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Gestione Immagine Asset Locale */
+.card-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    background-color: #1c1c1e; /* Fallback se manca la foto */
+    border-bottom: 0.5px solid rgba(255, 255, 255, 0.1);
+}
+
+.card-content {
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 1;
+}
+
+.card-content h3 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+}
+
+.desc-text {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 14px;
+    line-height: 1.4;
+    margin-bottom: 20px;
+}
+
+/* FOOTER CARD (PREZZO E BTN) */
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .price {
     font-size: 18px;
-    color: #3b82f6;
-    font-weight: bold;
-}
-
-/* Pulsanti */
-.btn {
-    background-color: #3b82f6;
+    font-weight: 700;
     color: #ffffff;
-    padding: 10px 20px;
-    text-decoration: none;
-    border-radius: 4px;
-    display: inline-block;
-    border: none;
-    cursor: pointer;
 }
 
 .btn-small {
-    background-color: #333333;
-    color: #ffffff;
-    padding: 5px 10px;
+    background-color: #ffffff;
+    color: #000000;
     text-decoration: none;
-    font-size: 12px;
-    border-radius: 3px;
+    padding: 10px 20px;
+    border-radius: 14px;
+    font-size: 13px;
+    font-weight: 700;
+    transition: 0.2s;
 }
 
-.btn-danger {
-    background-color: transparent;
-    color: #ef4444;
-    border: 1px solid #ef4444;
+.btn-small:hover {
+    background-color: #0a84ff;
+    color: #ffffff;
 }
 
-.full-width {
-    width: 100%;
-    text-align: center;
-}
-
-/* Form di Login e Registrazione */
+/* =========================================
+   LOGIN & REGISTRAZIONE (UI SENSATA)
+   ========================================= */
 .auth-box {
-    background-color: #1a1a1a;
-    border: 1px solid #333333;
+    background: rgba(28, 28, 30, 0.4);
+    backdrop-filter: blur(30px);
+    border: 0.5px solid rgba(255, 255, 255, 0.1);
     padding: 40px;
     max-width: 400px;
-    margin: 100px auto;
-    border-radius: 8px;
+    margin: 80px auto;
+    border-radius: 32px;
+    text-align: center;
 }
 
 .form-group {
     margin-bottom: 20px;
+    text-align: left;
 }
 
 .form-group label {
     display: block;
-    margin-bottom: 5px;
-    color: #999999;
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.4);
+    margin-bottom: 8px;
+    margin-left: 5px;
+    text-transform: uppercase;
 }
 
 .form-group input {
     width: 100%;
-    padding: 10px;
-    background-color: #000000;
-    border: 1px solid #333333;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 0.5px solid rgba(255, 255, 255, 0.1);
+    border-radius: 14px;
     color: #ffffff;
+    font-size: 16px;
+    outline: none;
 }
 
-/* Barra di ricerca */
-.search-bar input {
-    padding: 10px;
-    width: 300px;
-    background-color: #1a1a1a;
-    border: 1px solid #333333;
-    color: #ffffff;
+.form-group input:focus {
+    border-color: #0a84ff;
+    background: rgba(255, 255, 255, 0.08);
 }
 
-/* Layout Dettaglio Gioco */
-.detail-main {
-    margin-bottom: 40px;
-}
+/* =========================================
+   RESPONSIVE DESIGN (MOBILE)
+   ========================================= */
+@media (max-width: 600px) {
+    .header-inner {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .nav-group {
+        width: 100%;
+        justify-content: center;
+        overflow-x: auto;
+        padding-bottom: 5px;
+    }
 
-.purchase-box {
-    background-color: #1a1a1a;
-    border: 1px solid #333333;
-    padding: 30px;
-    text-align: center;
-}
-
-.price-large {
-    font-size: 28px;
-    display: block;
-    margin-bottom: 20px;
+    .hero h1 {
+        font-size: 32px;
+    }
+    
+    .grid {
+        grid-template-columns: 1fr; /* Una card sola per riga su mobile */
+    }
 }
