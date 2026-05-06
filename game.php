@@ -2,57 +2,47 @@
 session_start();
 include 'connect_db.php';
 
-$id_gioco = isset($_GET['id']) ? (int) $_GET['id'] : 0;
-$stmt = $conn->prepare("SELECT * FROM giochi WHERE id = ?");
-$stmt->bind_param("i", $id_gioco);
-$stmt->execute();
-$ris = $stmt->get_result();
-$g = $ris->fetch_assoc();
+$id = (int)($_GET['id'] ?? 0);
+$query = "SELECT * FROM giochi WHERE id = $id";
+$risultato = $conn->query($query);
+$gioco = $risultato->fetch_assoc();
 
-if (!$g) {
-    header("Location: catalogue.php");
-    exit();
-}
+if (!$gioco) { header("Location: catalogue.php"); exit(); }
 ?>
 <!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo htmlspecialchars($g['titolo']); ?></title>
+    <title><?= $gioco['titolo'] ?> - Vault</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="auth-page">
     <header class="site-header">
         <div class="header-inner">
-            <a href="index.php" class="brand">STORE</a>
-            <nav class="nav-right">
-                <a href="index.php" class="nav-link">Home</a>
-                <a href="catalogue.php" class="nav-link">Catalogo</a>
-                <?php if (isset($_SESSION['id_utente'])): ?>
-                    <a href="library.php" class="nav-link">Libreria</a>
-                    <a href="profile.php" class="nav-link">Profilo</a>
-                <?php endif; ?>
+            <a href="index.php" class="brand">VAULT</a>
+            <nav class="nav-group">
+                <a href="catalogue.php" class="nav-link">Store</a>
+                <a href="cart.php" class="nav-link">Carrello (<?= count($_SESSION['carrello'] ?? []) ?>)</a>
             </nav>
         </div>
     </header>
 
-    <main class="container">
-        <div class="detail-layout">
-            <div class="detail-main">
-                <h1><?php echo htmlspecialchars($g['titolo']); ?></h1>
-                <p><?php echo htmlspecialchars($g['descrizione'] ?? 'Acquista ora la versione digitale completa per un accesso immediato.'); ?></p>
+    <main class="container" style="margin-top: 120px; display: flex; gap: 40px;">
+        <div class="game-cover">
+            <img src="<?= $gioco['immagine'] ?>" style="width: 300px; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.5);">
+        </div>
+        
+        <div class="game-info">
+            <h1><?= htmlspecialchars($gioco['titolo']) ?></h1>
+            <p style="color: var(--text-dim); margin-top: 20px;"><?= nl2br(htmlspecialchars($gioco['descrizione'])) ?></p>
+            
+            <div class="purchase-card" style="background: rgba(255,255,255,0.05); padding: 30px; border-radius: 20px; margin-top: 30px;">
+                <span style="font-size: 2rem; font-weight: 800;"><?= number_format($gioco['prezzo'], 2) ?> €</span>
+                <div style="margin-top: 20px; display: flex; gap: 15px;">
+                    <a href="add_to_cart.php?id=<?= $gioco['id'] ?>" class="btn-buy" style="background: #323232; border: 1px solid #444;">Aggiungi al Carrello</a>
+                    <a href="checkout.php?direct_id=<?= $gioco['id'] ?>" class="btn-buy">Acquista Ora</a>
+                </div>
             </div>
-
-            <aside class="purchase-box">
-                <span class="price-large"><?php echo number_format($g['prezzo'], 2, ',', '.'); ?> €</span>
-                <?php if (isset($_SESSION['id_utente'])): ?>
-                    <a href="buy.php?id=<?php echo $g['id']; ?>" class="btn btn-primary full-width">Acquista Ora</a>
-                <?php else: ?>
-                    <p class="notice" style="margin-bottom: 1rem; color: var(--text-dim);">Accedi per aggiungere il titolo alla tua libreria.</p>
-                    <a href="login.php" class="btn btn-primary full-width">Accedi</a>
-                <?php endif; ?>
-            </aside>
         </div>
     </main>
 </body>

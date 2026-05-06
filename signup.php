@@ -1,17 +1,22 @@
 <?php
 include 'connect_db.php';
 
+$messaggio = "";
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $nick = $_POST['nickname'];
-    $email = $_POST['email'];
-    $pass = password_hash($_POST['password'], PASSWORD_DEFAULT);
+    $nick = $conn->real_escape_string($_POST['nickname']);
+    $email = $conn->real_escape_string($_POST['email']);
+    // Criptiamo la password
+    $pass_criptata = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
     $stmt = $conn->prepare("INSERT INTO utenti (nickname, email, password) VALUES (?, ?, ?)");
-    $stmt->bind_param("sss", $nick, $email, $pass);
+    $stmt->bind_param("sss", $nick, $email, $pass_criptata);
 
     if ($stmt->execute()) {
-        header("Location: login.php");
+        header("Location: login.php?msg=registrato");
         exit();
+    } else {
+        $messaggio = "Errore durante la registrazione.";
     }
 }
 ?>
@@ -19,31 +24,48 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registrati</title>
+    <title>Registrati - Vault</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="centered-layout">
-    <main class="auth-box">
-        <h1>Crea Account</h1>
-        <p style="color: var(--text-dim); margin-bottom: 2rem;">Entra a far parte della nostra piattaforma.</p>
+<body class="auth-page">
 
-        <form action="signup.php" method="POST">
-            <div class="form-group">
-                <label>Nickname</label>
-                <input type="text" name="nickname" required>
-            </div>
-            <div class="form-group">
-                <label>Email</label>
-                <input type="email" name="email" required>
-            </div>
-            <div class="form-group">
-                <label>Password</label>
-                <input type="password" name="password" required>
-            </div>
-            <button type="submit" class="btn btn-primary full-width">Registrati</button>
-            <p class="alt-action">Hai già un account? <a href="login.php">Accedi</a></p>
-        </form>
+    <header class="site-header">
+        <div class="header-inner">
+            <a href="index.php" class="brand">VAULT</a>
+            <nav class="nav-group">
+                <a href="catalogue.php" class="nav-link">Store</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container auth-wrapper">
+        <div class="auth-card">
+            <h2>Crea Account</h2>
+            <p class="auth-subtitle">Unisciti alla community di Vault</p>
+
+            <?php if ($messaggio): ?>
+                <p class="error-msg"><?= $messaggio ?></p>
+            <?php endif; ?>
+
+            <form method="POST">
+                <div class="form-group">
+                    <label>NICKNAME</label>
+                    <input type="text" name="nickname" placeholder="Scegli un nick" required>
+                </div>
+                <div class="form-group">
+                    <label>EMAIL</label>
+                    <input type="email" name="email" placeholder="esempio@mail.com" required>
+                </div>
+                <div class="form-group">
+                    <label>PASSWORD</label>
+                    <input type="password" name="password" placeholder="Minimo 8 caratteri" required>
+                </div>
+                <button type="submit" class="btn-buy" style="width: 100%; border:none; cursor:pointer;">Registrati</button>
+                <div class="auth-footer">
+                    <span>Hai già un account?</span> <a href="login.php">Accedi</a>
+                </div>
+            </form>
+        </div>
     </main>
 </body>
 </html>

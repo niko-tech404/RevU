@@ -2,37 +2,39 @@
 session_start();
 include 'connect_db.php';
 
-// Gestione Ricerca
-$search = trim($_GET['q'] ?? '');
-$escapedSearch = $conn->real_escape_string($search);
+// 1. GESTIONE INPUT (Semplice e leggibile)
+$cerca_nome = $_GET['q'] ?? '';
+$ordina_per = $_GET['order'] ?? 'titolo ASC'; // Default Alfabetico
 
+$termine_sicuro = $conn->real_escape_string($cerca_nome);
+
+// 2. COSTRUZIONE QUERY
 $sql = "SELECT * FROM giochi";
-if ($search !== '') {
-    $sql .= " WHERE titolo LIKE '%$escapedSearch%'";
+
+if (!empty($cerca_nome)) {
+    $sql .= " WHERE titolo LIKE '%$termine_sicuro%'";
 }
-$sql .= " ORDER BY titolo ASC";
-$ris = $conn->query($sql);
+
+$sql .= " ORDER BY $ordina_per";
+$lista_giochi = $conn->query($sql);
 ?>
 
 <!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catalogo Giochi - Store 2026</title>
+    <title>Catalogo - 3 per fila</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <header class="site-header">
         <div class="header-inner">
-            <a href="index.php" class="brand">GAMER_VAULT</a>
+            <a href="index.php" class="brand" style="font-size: 16px;">VAULT</a>
             <nav class="nav-group">
-                <a href="index.php" class="nav-link">Home</a>
-                <a href="catalogue.php" class="nav-link active">Catalogo</a>
+                <a href="index.php" class="nav-link">Store</a>
                 <?php if(isset($_SESSION['id_utente'])): ?>
-                    <a href="library.php" class="nav-link">Libreria</a>
-                    <a href="logout.php" class="nav-link" style="color: #ff453a;">Esci</a>
+                    <a href="logout.php" class="nav-link">Esci</a>
                 <?php else: ?>
                     <a href="login.php" class="nav-link">Accedi</a>
                 <?php endif; ?>
@@ -40,55 +42,44 @@ $ris = $conn->query($sql);
         </div>
     </header>
 
-    <main class="container">
-        <!-- Hero Section con Ricerca Raggruppata -->
-        <section style="padding: 40px 0;">
-            <h1 style="font-size: 42px; letter-spacing: -2px; margin-bottom: 10px;">Catalogo</h1>
-            <p style="color: rgba(255,255,255,0.5); margin-bottom: 30px;">Esplora i migliori titoli della generazione.</p>
-
-            <div class="search-group">
-                <form action="catalogue.php" method="GET" class="search-container">
-                    <input type="text" name="q" class="search-input" 
-                           placeholder="Cerca un titolo..." 
-                           value="<?php echo htmlspecialchars($search); ?>">
-                    <button type="submit" class="search-btn">Cerca</button>
-                </form>
-            </div>
-        </section>
-
-        <!-- Griglia Giochi -->
-        <div class="grid">
-            <?php if ($ris && $ris->num_rows > 0): ?>
-                <?php while($g = $ris->fetch_assoc()): ?>
+    <main class="container catalogo-layout">
+        
+        <!-- AREA GIOCHI (3 per fila) -->
+        <section class="grid">
+            <?php if ($lista_giochi->num_rows > 0): ?>
+                <?php while($gioco = $lista_giochi->fetch_assoc()): ?>
                     <article class="card">
-                        <!-- Immagine locale da assets/game/ -->
-                        <img src="<?php echo htmlspecialchars($g['immagine']); ?>" 
-                             alt="Cover <?php echo htmlspecialchars($g['titolo']); ?>" 
-                             class="card-image">
-                        
+                        <img src="<?= $gioco['immagine'] ?>" class="card-image">
                         <div class="card-content">
-                            <div>
-                                <h3><?php echo htmlspecialchars($g['titolo']); ?></h3>
-                                <p class="desc-text">Esperienza digitale completa.</p>
-                            </div>
-                            
-                            <div class="card-footer">
-                                <span class="price">
-                                    <?php echo ($g['prezzo'] == 0) ? 'Gratis' : number_format($g['prezzo'], 2) . ' €'; ?>
-                                </span>
-                                <a href="game.php?id=<?php echo $g['id']; ?>" class="btn-small">Dettagli</a>
+                            <h3><?= htmlspecialchars($gioco['titolo']) ?></h3>
+                            <div class="card-footer" style="display:flex; justify-content:space-between; align-items:center;">
+                                <span style="font-weight:700; font-size:14px;"><?= number_format($gioco['prezzo'], 2) ?> €</span>
+                                <a href="game.php?id=<?= $gioco['id'] ?>" class="btn-small">Apri</a>
                             </div>
                         </div>
                     </article>
                 <?php endwhile; ?>
             <?php else: ?>
-                <div style="grid-column: 1/-1; text-align: center; padding: 50px;">
-                    <p style="color: rgba(255,255,255,0.5);">Nessun gioco trovato per questa ricerca.</p>
-                    <a href="catalogue.php" style="color: #0a84ff; text-decoration: none; margin-top: 10px; display: block;">Mostra tutti</a>
-                </div>
+                <p>Nessun gioco trovato.</p>
             <?php endif; ?>
-        </div>
-    </main>
+        </section>
 
+        <!-- SIDEBAR RICERCA (A destra) -->
+        <aside class="sidebar-filtri">
+            <form method="GET">
+                <label class="filtro-label">Ricerca rapida</label>
+                <input type="text" name="q" class="search-sidebar" placeholder="Scrivi qui..." value="<?= htmlspecialchars($cerca_nome) ?>">
+                
+                <label class="filtro-label">Ordina</label>
+                <select name="order" class="select-custom" onchange="this.form.submit()">
+                    <option value="titolo ASC" <?= $ordina_per == 'titolo ASC' ? 'selected' : '' ?>>A-Z</option>
+                    <option value="prezzo ASC" <?= $ordina_per == 'prezzo ASC' ? 'selected' : '' ?>>Prezzo Min</option>
+                </select>
+                
+                <button type="submit" class="btn-buy" style="width:100%; margin-top:15px; font-size:12px;">Aggiorna</button>
+            </form>
+        </aside>
+
+    </main>
 </body>
 </html>
