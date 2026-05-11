@@ -3,6 +3,7 @@ session_start();
 include 'connect_db.php';
 
 $id = (int)($_GET['id'] ?? 0);
+$id=(isset($_GET ['id'])? $_GET['id']:0);
 
 /* Controllo se l'utente ha comprato il gioco */
 $ha_comprato = false;
@@ -81,6 +82,7 @@ $commenti = $conn->query($sql_commenti);
                     <a href="library.php" class="nav-link">Libreria</a>
                 <?php endif; ?>
                 <a href="cart.php" class="nav-link">Carrello (<?= count($_SESSION['carrello'] ?? []) ?>)</a>
+                <a href="profile.php" class="nav-link"><img class='pfp' src="assets/pfp.png" alt="pfpimg" height="25px" width="25px"></a>
             </nav>
         </div>
     </header>

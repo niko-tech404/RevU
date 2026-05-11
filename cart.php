@@ -31,6 +31,7 @@ if (!empty($_SESSION['carrello'])) {
                     <a href="library.php" class="nav-link">Libreria</a>
                 <?php endif; ?>
                 <a href="cart.php" class="nav-link active">Carrello (<?= count($prodotti) ?>)</a>
+                <a href="profile.php" class="nav-link"><img class='pfp' src="assets/pfp.png" alt="pfpimg" height="25px" width="25px"></a>
             </nav>
         </div>
     </header>

@@ -40,7 +40,7 @@ while ($row = $ris->fetch_assoc()) {
                 <a href="index.php" class="nav-link">Home</a>
                 <a href="catalogue.php" class="nav-link">Catalogo</a>
                 <a href="library.php" class="nav-link active">Libreria</a>
-                <a href="profile.php" class="nav-link">Profilo</a>
+                <a href="profile.php" class="nav-link"><img class='pfp' src="assets/pfp.png" alt="pfpimg" height="25px" width="25px"></a>
             </nav>
         </div>
     </header>

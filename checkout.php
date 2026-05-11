@@ -44,6 +44,7 @@ if (empty($prodotti)) { header("Location: catalogue.php"); exit(); }
                 <a href="catalogue.php" class="nav-link">Catalogo</a>
                 <a href="cart.php" class="nav-link">Carrello</a>
                 <a href="checkout.php<?= $directId > 0 ? '?direct_id=' . $directId : '' ?>" class="nav-link active">Checkout</a>
+                <a href="profile.php" class="nav-link"><img class='pfp' src="assets/pfp.png" alt="pfpimg" height="25px" width="25px"></a>
             </nav>
         </div>
     </header>

@@ -35,7 +35,7 @@ $heroGame = $featuredGames[0] ?? null;
                 <a href="catalogue.php" class="nav-link">Catalogo</a>
                 <?php if (isset($_SESSION['id_utente'])): ?>
                     <a href="library.php" class="nav-link">Libreria</a>
-                    <a href="profile.php" class="nav-link">Profilo</a>
+                    <a href="profile.php" class="nav-link"><img class='pfp' src="assets/pfp.png" alt="pfpimg" height="25px" width="25px"></a>
                 <?php else: ?>
                     <a href="login.php" class="nav-link">Accedi</a>
                 <?php endif; ?>

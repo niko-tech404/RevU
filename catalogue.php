@@ -45,8 +45,7 @@ $lista_giochi = $conn->query($sql);
                 <?php if(isset($_SESSION['id_utente'])): ?>
                     <a href="library.php" class="nav-link">Libreria</a>
                     <a href="cart.php" class="nav-link">Carrello (<?= count($_SESSION['carrello'] ?? []) ?>)</a>
-                    <a href="profile.php" class="nav-link">Profilo</a>
-                    <a href="logout.php" class="nav-link">Esci</a>
+                    <a href="profile.php" class="nav-link"><img class='pfp' src="assets/pfp.png" alt="pfpimg" height="25px" width="25px"></a>
                 <?php else: ?>
                     <a href="login.php" class="nav-link">Accedi</a>
                 <?php endif; ?>
