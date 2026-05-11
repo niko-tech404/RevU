@@ -39,7 +39,6 @@ $u = $stmt->get_result()->fetch_assoc();
                     <p class="eyebrow">Area personale</p>
                     <h1>Profilo utente</h1>
                 </div>
-                <p class="section-note">Dati essenziali, azioni chiare e una gerarchia più ordinata.</p>
             </div>
             <div class="data-row">
                 <strong>Nickname:</strong>
