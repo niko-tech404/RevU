@@ -37,7 +37,8 @@ $u = $stmt->get_result()->fetch_assoc();
             <div class="section-head section-head-tight">
                 <div>
                     <p class="eyebrow">Area personale</p>
-                    <h1>Profilo utente</h1>
+                    <br>
+                    <img class='pfp' src="assets/pfp.png" alt="pfpimg" height="200px" width="200px">
                 </div>
                 <p class="section-note">Dati essenziali, azioni chiare e una gerarchia più ordinata.</p>
             </div>
