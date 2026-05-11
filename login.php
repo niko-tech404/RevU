@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($risultato->num_rows > 0) {
         $utente = $risultato->fetch_assoc();
         
-        // CORREZIONE: Usiamo password_verify per le password criptate
+        //password_verify per le password criptate
         if (password_verify($pass_inserita, $utente['password'])) { 
             $_SESSION['id_utente'] = $utente['id'];
             $_SESSION['nickname'] = $nick;
@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     <header class="site-header">
         <div class="header-inner">
-            <a href="index.php" class="brand">VAULT</a>
+            <a href="index.php" class="brand">RevU</a>
             <nav class="nav-group">
                 <a href="catalogue.php" class="nav-link">Catalogo</a>
             </nav>

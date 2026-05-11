@@ -2,19 +2,19 @@
 session_start();
 include 'connect_db.php';
 
-// 1. GESTIONE INPUT (Semplice e leggibile)
+// GESTIONE INPUT
 $cerca_nome = $_GET['q'] ?? '';
 $allowedOrders = [
     'titolo ASC' => 'titolo ASC',
     'prezzo ASC' => 'prezzo ASC',
     'prezzo DESC' => 'prezzo DESC'
 ];
-$ordina_per = $_GET['order'] ?? 'titolo ASC'; // Default Alfabetico
+$ordina_per = $_GET['order'] ?? 'titolo ASC';
 $ordina_per = $allowedOrders[$ordina_per] ?? 'titolo ASC';
 
 $termine_sicuro = $conn->real_escape_string($cerca_nome);
 
-// 2. COSTRUZIONE QUERY
+// QUERY
 $sql = "SELECT giochi.*, AVG(recensioni.voto) AS media_voti
         FROM giochi
         LEFT JOIN recensioni ON giochi.id = recensioni.id_gioco";
@@ -38,7 +38,7 @@ $lista_giochi = $conn->query($sql);
 
     <header class="site-header">
         <div class="header-inner">
-            <a href="index.php" class="brand brand-small">VAULT</a>
+            <a href="index.php" class="brand brand-small">RevU</a>
             <nav class="nav-group">
                 <a href="index.php" class="nav-link">Home</a>
                 <a href="catalogue.php" class="nav-link active">Catalogo</a>
@@ -56,7 +56,7 @@ $lista_giochi = $conn->query($sql);
 
     <main class="container catalogo-layout">
         
-        <!-- AREA GIOCHI (3 per fila) -->
+        <!-- AREA GIOCHI -->
         <section class="catalogue-results">
             <div class="section-head section-head-tight">
                 <div>
@@ -105,7 +105,7 @@ $lista_giochi = $conn->query($sql);
             </div>
         </section>
 
-        <!-- SIDEBAR RICERCA (A destra) -->
+        <!--RICERCA-->
         <aside class="sidebar-filtri">
             <form method="GET" class="filter-form">
                 <div class="filter-card">

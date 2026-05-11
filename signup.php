@@ -31,7 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <header class="site-header">
         <div class="header-inner">
-            <a href="index.php" class="brand">VAULT</a>
+            <a href="index.php" class="brand">RevU</a>
             <nav class="nav-group">
                 <a href="catalogue.php" class="nav-link">Catalogo</a>
             </nav>

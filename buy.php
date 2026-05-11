@@ -11,7 +11,7 @@ $id_u = (int) $_SESSION['id_utente'];
 $id_g = isset($_GET['id']) ? (int) $_GET['id'] : 0;
 
 if ($id_g > 0) {
-    // Check di consistenza con prepared statement per evitare abusi o duplicate key
+    // Check di consistenza
     $stmtCheck = $conn->prepare("SELECT 1 FROM libreria WHERE id_utente = ? AND id_gioco = ? LIMIT 1");
     $stmtCheck->bind_param("ii", $id_u, $id_g);
     $stmtCheck->execute();
