@@ -46,9 +46,8 @@ $heroGame = $featuredGames[0] ?? null;
     <main class="container">
         <section class="hero hero-home">
             <div class="hero-copy">
-                <span class="hero-label">Catalogo curato</span>
+                <span class="hero-label">Catalogo</span>
                 <h1>Scopri la tua prossima avventura</h1>
-                <p>Un catalogo essenziale, con giochi scelti bene, acquisto veloce e una libreria chiara da usare davvero.</p>
                 <div class="hero-actions">
                     <a href="catalogue.php" class="btn-buy">Esplora il catalogo</a>
                     <?php if (isset($_SESSION['id_utente'])): ?>
@@ -92,7 +91,6 @@ $heroGame = $featuredGames[0] ?? null;
                     <p class="eyebrow">Selezione</p>
                     <h2>In evidenza</h2>
                 </div>
-                <p class="section-note">I titoli più forti del catalogo, messi subito in risalto.</p>
             </div>
             <div class="grid">
                 <?php foreach ($featuredGames as $gioco): ?>
@@ -128,7 +126,6 @@ $heroGame = $featuredGames[0] ?? null;
                     <p class="eyebrow">Prezzi vantaggiosi</p>
                     <h2>Sconti</h2>
                 </div>
-                <p class="section-note">Una selezione rapida di giochi dal prezzo più accessibile del catalogo.</p>
             </div>
             <div class="grid">
                 <?php foreach ($discountGames as $gioco): ?>

@@ -60,8 +60,7 @@ $sql_commenti = "SELECT recensioni.*, utenti.nickname
                  FROM recensioni
                  JOIN utenti ON recensioni.id_utente = utenti.id
                  WHERE recensioni.id_gioco = $id
-                 ORDER BY recensioni.id DESC";
-
+                 ORDER BY recensioni.id_utente DESC";
 $commenti = $conn->query($sql_commenti);
 ?>
 
@@ -69,7 +68,7 @@ $commenti = $conn->query($sql_commenti);
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <title><?= htmlspecialchars($gioco['titolo']) ?> - Vault</title>
+    <title>RevU - <?= htmlspecialchars($gioco['titolo']) ?></title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="auth-page">
@@ -152,7 +151,6 @@ $commenti = $conn->query($sql_commenti);
                     <p class="eyebrow">Community</p>
                     <h2>Recensioni</h2>
                 </div>
-                <p class="section-note">Un'area più ordinata, leggibile e simile a una vera scheda prodotto.</p>
             </div>
 
             <?php if (isset($_SESSION['id_utente'])): ?>

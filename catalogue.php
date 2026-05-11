@@ -31,7 +31,7 @@ $lista_giochi = $conn->query($sql);
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <title>Vault - Catalogo</title>
+    <title>RevU - Catalogo</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -62,7 +62,6 @@ $lista_giochi = $conn->query($sql);
                     <p class="eyebrow">Store</p>
                     <h1>Catalogo giochi</h1>
                 </div>
-                <p class="section-note">Scopri i titoli disponibili e passa dal dettaglio all'acquisto con un flusso più diretto.</p>
             </div>
 
             <div class="grid">
@@ -118,9 +117,9 @@ $lista_giochi = $conn->query($sql);
                     
                     <label class="filtro-label">Ordina</label>
                     <select name="order" class="select-custom" onchange="this.form.submit()">
-                        <option value="titolo ASC" <?= $ordina_per == 'titolo ASC' ? 'selected' : '' ?>>A-Z</option>
-                        <option value="prezzo ASC" <?= $ordina_per == 'prezzo ASC' ? 'selected' : '' ?>>Prezzo Min</option>
-                        <option value="prezzo DESC" <?= $ordina_per == 'prezzo DESC' ? 'selected' : '' ?>>Prezzo Max</option>
+                        <option class="option" value="titolo ASC" <?= $ordina_per == 'titolo ASC' ? 'selected' : '' ?>>A-Z</option>
+                        <option class="option" value="prezzo ASC" <?= $ordina_per == 'prezzo ASC' ? 'selected' : '' ?>>Prezzo Min</option>
+                        <option class="option" value="prezzo DESC" <?= $ordina_per == 'prezzo DESC' ? 'selected' : '' ?>>Prezzo Max</option>
                     </select>
 
                     <button type="submit" class="btn-buy btn-full">Aggiorna risultati</button>

@@ -40,7 +40,6 @@ $u = $stmt->get_result()->fetch_assoc();
                     <br>
                     <img class='pfp' src="assets/pfp.png" alt="pfpimg" height="200px" width="200px">
                 </div>
-                <p class="section-note">Dati essenziali, azioni chiare e una gerarchia più ordinata.</p>
             </div>
             <div class="data-row">
                 <strong>Nickname:</strong>

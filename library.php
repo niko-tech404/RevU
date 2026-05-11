@@ -29,7 +29,7 @@ while ($row = $ris->fetch_assoc()) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vault - Libreria</title>
+    <title>RevU - Libreria</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -51,7 +51,6 @@ while ($row = $ris->fetch_assoc()) {
                 <p class="eyebrow">Raccolta personale</p>
                 <h1>I tuoi giochi</h1>
             </div>
-            <p class="section-note">La libreria ora usa card complete come il catalogo, così ogni titolo resta leggibile e coerente.</p>
         </div>
 
         <?php if (!empty($library)): ?>
