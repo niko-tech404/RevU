@@ -57,7 +57,6 @@ if (empty($prodotti)) { header("Location: catalogue.php"); exit(); }
                         <p class="eyebrow">Pagamento</p>
                         <h1>Checkout sicuro</h1>
                     </div>
-                    <p class="section-note">Layout più vicino ai siti reali: form chiaro a sinistra, riepilogo ordine a destra.</p>
                 </div>
 
                 <form action="process_payment.php" method="POST" class="checkout-form">

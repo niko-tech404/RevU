@@ -108,11 +108,10 @@ $lista_giochi = $conn->query($sql);
             <form method="GET" class="filter-form">
                 <div class="filter-card">
                     <div class="filter-card-head">
-                        <h2>Filtri rapidi</h2>
-                        <p>La ricerca resta semplice e immediata.</p>
+                        <h2>Filtra</h2>
                     </div>
 
-                    <label class="filtro-label">Ricerca rapida</label>
+                    <label class="filtro-label">Titolo</label>
                     <input type="text" name="q" class="search-sidebar" placeholder="Scrivi qui..." value="<?= htmlspecialchars($cerca_nome) ?>">
                     
                     <label class="filtro-label">Ordina</label>

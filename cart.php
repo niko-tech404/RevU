@@ -44,7 +44,6 @@ if (!empty($_SESSION['carrello'])) {
                         <p class="eyebrow">Ordine</p>
                         <h1>Il tuo carrello</h1>
                     </div>
-                    <p class="section-note">Un riepilogo più chiaro dei prodotti scelti prima del checkout.</p>
                 </div>
 
                 <?php if (empty($prodotti)): ?>
