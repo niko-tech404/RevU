@@ -3,16 +3,14 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Mag 06, 2026 alle 16:22
+-- Creato il: Giu 03, 2026 alle 08:33
 -- Versione del server: 10.4.32-MariaDB
--- Versione PHP: 8.2.12
+-- Versione PHP: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
 
-CREATE DATABASE IF NOT EXISTS `steam` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `steam`;
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -129,13 +127,6 @@ CREATE TABLE `libreria` (
   `id_gioco` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dump dei dati per la tabella `libreria`
---
-
-INSERT INTO `libreria` (`id_utente`, `id_gioco`) VALUES
-(4, 32);
-
 -- --------------------------------------------------------
 
 --
@@ -144,18 +135,11 @@ INSERT INTO `libreria` (`id_utente`, `id_gioco`) VALUES
 
 CREATE TABLE `recensioni` (
   `id` int(11) NOT NULL,
-  `id_utente` int(11) NOT NULL,
-  `id_gioco` int(11) NOT NULL,
-  `voto` int(1) NOT NULL,
-  `commento` text DEFAULT NULL
+  `id_utente` int(11) DEFAULT NULL,
+  `id_gioco` int(11) DEFAULT NULL,
+  `voto` int(11) DEFAULT NULL,
+  `commento` varchar(500) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dump dei dati per la tabella `recensioni`
---
-
-INSERT INTO `recensioni` (`id`, `id_utente`, `id_gioco`, `voto`, `commento`) VALUES
-(1, 4, 32, 5, 'spacca');
 
 -- --------------------------------------------------------
 
@@ -175,9 +159,7 @@ CREATE TABLE `utenti` (
 --
 
 INSERT INTO `utenti` (`id`, `nickname`, `email`, `password`) VALUES
-(2, 'Nicola 8050', 'verardinicola21@gmail.com', '$2y$10$1nUEJjMWg4IFk0TWQ2vG1uZTE6zpT0n81SbnAzI6cGEI4EHDbUE.C'),
-(3, 'Nicola 8050', 'verardinicola21@gmail.com', '$2y$10$QS0JIPhOJniXtyfYXYvyguLkfVDQonWAve0KTF3vDqrjbFH/9anmO'),
-(4, 'IlDege', 'gabriele.degennaro03@gmail.com', '$2y$10$wLaApHFdGRqcPgFTpU5hfeF84u0yK3ipw/ps.RIeDVz3MWbmSXG.C');
+(4, 'fenlos', 'chicco030507@gmail.com', '$2y$10$ci8QFqci6wSzLeKSaDgGY.gzEPbdz/cEg3MbJ/JNAb5QPjv7YoezG');
 
 --
 -- Indici per le tabelle scaricate
@@ -201,7 +183,7 @@ ALTER TABLE `libreria`
 --
 ALTER TABLE `recensioni`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `unica_recensione` (`id_utente`,`id_gioco`),
+  ADD KEY `id_utente` (`id_utente`),
   ADD KEY `id_gioco` (`id_gioco`);
 
 --
@@ -224,7 +206,7 @@ ALTER TABLE `giochi`
 -- AUTO_INCREMENT per la tabella `recensioni`
 --
 ALTER TABLE `recensioni`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT per la tabella `utenti`
@@ -247,8 +229,8 @@ ALTER TABLE `libreria`
 -- Limiti per la tabella `recensioni`
 --
 ALTER TABLE `recensioni`
-  ADD CONSTRAINT `recensioni_ibfk_1` FOREIGN KEY (`id_utente`) REFERENCES `utenti` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `recensioni_ibfk_2` FOREIGN KEY (`id_gioco`) REFERENCES `giochi` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `recensioni_ibfk_1` FOREIGN KEY (`id_utente`) REFERENCES `utenti` (`id`),
+  ADD CONSTRAINT `recensioni_ibfk_2` FOREIGN KEY (`id_gioco`) REFERENCES `giochi` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
